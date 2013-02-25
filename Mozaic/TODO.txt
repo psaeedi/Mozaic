@@ -1,0 +1,14 @@
+1 - Create a service which download and filter received messages in background
+2 - Create a settings activity
+3 - Visualise messages in the main activity
+4 - implement the algorithm to filter and select messages.
+5 - create a view to twit new messages
+
+For the future
+- Handle multiple twitter accounts from the settings activity
+- Handle other data sources such as blogs, facebook, G+, Gmail, fourthsquare
+- Allow message sharing by sending an intent to other apps.
+- notify new messages
+- ADS? let's start making some money ;)
+
+
