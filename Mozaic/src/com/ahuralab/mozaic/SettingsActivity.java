@@ -52,7 +52,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * shown.
 	 */
 	private void setupSimplePreferencesScreen() {
-		if (!isSimplePreferences(this)) {
+		if (!isSimplePreferences(this.getApplicationContext())) {
 			return;
 		}
 
@@ -63,13 +63,13 @@ public class SettingsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.pref_general);
 
 		// Add 'notifications' preferences, and a corresponding header.
-		PreferenceCategory fakeHeader = new PreferenceCategory(this);
+		PreferenceCategory fakeHeader = new PreferenceCategory(this.getApplicationContext());
 		fakeHeader.setTitle(R.string.pref_header_notifications);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_notification);
 
 		// Add 'data and sync' preferences, and a corresponding header.
-		fakeHeader = new PreferenceCategory(this);
+		fakeHeader = new PreferenceCategory(this.getApplicationContext());
 		fakeHeader.setTitle(R.string.pref_header_data_sync);
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_data_sync);
@@ -86,7 +86,8 @@ public class SettingsActivity extends PreferenceActivity {
 	/** {@inheritDoc} */
 	@Override
 	public boolean onIsMultiPane() {
-		return isXLargeTablet(this) && !isSimplePreferences(this);
+		return isXLargeTablet(this.getApplicationContext()) &&
+				!isSimplePreferences(this.getApplicationContext());
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void onBuildHeaders(List<Header> target) {
-		if (!isSimplePreferences(this)) {
+		if (!isSimplePreferences(this.getApplicationContext())) {
 			loadHeadersFromResource(R.xml.pref_headers, target);
 		}
 	}

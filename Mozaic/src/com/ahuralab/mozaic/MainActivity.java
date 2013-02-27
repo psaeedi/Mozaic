@@ -26,13 +26,15 @@ public class MainActivity extends Activity {
 		welcomeView = (TextView) findViewById(R.id.welcome_message);
 		
 		TwitterAuthenticator auth = new TwitterAuthenticator();
-		if (!auth.isAuthenticated(this)) {
-			Intent intent = new Intent(this, TwitterLoginActivity.class);
+		if (!auth.isAuthenticated(this.getApplicationContext())) {
+			Intent intent = new Intent(this.getApplicationContext(), TwitterLoginActivity.class);
 			startActivity(intent);
-			return;
-		} else {
-			getUsername();
-		}
+		} 
+	}
+	
+	public void onStart(){
+		super.onStart();
+		getUsername();
 	}
 
 	@Override
@@ -47,8 +49,9 @@ public class MainActivity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			Intent intent = new Intent(this, SettingsActivity.class);
+			Intent intent = new Intent(this.getApplicationContext(), SettingsActivity.class);
 			startActivity(intent);
+			finish();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -72,9 +75,16 @@ public class MainActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			TwitterAuthenticator auth = new TwitterAuthenticator();
-			Twitter twitter = auth.createTwitter(MainActivity.this);
+			Twitter twitter = auth.createTwitter(MainActivity.this.getApplicationContext());
 			try {
-				welcomeView.setText("Hello " + twitter.getScreenName());
+				final String screenName = twitter.getScreenName();
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						welcomeView.setText("Hello " + screenName + "!");			
+					}
+				});
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
