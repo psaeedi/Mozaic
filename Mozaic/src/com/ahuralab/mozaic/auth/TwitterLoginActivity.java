@@ -1,7 +1,12 @@
 package com.ahuralab.mozaic.auth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,9 +15,8 @@ import android.view.Menu;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ahuralab.mozaic.MainActivity;
 import com.ahuralab.mozaic.R;
-import com.ahuralab.mozaic.SettingsActivity;
+import com.ahuralab.mozaic.TimelineActivity;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -31,29 +35,38 @@ public class TwitterLoginActivity extends Activity {
 	 */
 	private UserLoginTask mAuthTask = null;
 	
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (isNetworkAvailable() == false) {
+			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Network Error");
+			builder.setMessage("There is no connection avaiable!");
+		}
 		setContentView(R.layout.activity_login);
 		myWebView = (WebView) findViewById(R.id.webview);
-		
-		twitterAuth = new TwitterAuthenticator();	
+		twitterAuth = new TwitterAuthenticator();
+		//Context context = TwitterLoginActivity.this.getApplicationContext();
+		/*if(!twitterAuth.isAuthenticated(context)){
+			twitterAuth.createTwitter(context);
+		}*/
 	}
 	
 	@Override
 	public void onStart(){
 		super.onStart();
+		Context context = TwitterLoginActivity.this.getApplicationContext();
+		if(!twitterAuth.isAuthenticated(context)){
+			twitterAuth.createTwitter(context);
+		}
 		Intent intent = getIntent();		
 		if (intent.getAction() != Intent.ACTION_VIEW) { 
 			attemptLogin();
 		} else {
-			/*
-			// Callback
-		    Log.w("redirect-to-app", "going to save the key and secret");	 
-		    Uri uri = intent.getData();
-		    twitterAuth.handleCallBack(uri, this.getApplicationContext());
-		    intent = new Intent(this.getApplicationContext(), MainActivity.class);
-		    startActivity(intent);*/
+			
 		}
 		
 	}
@@ -83,7 +96,7 @@ public class TwitterLoginActivity extends Activity {
 		}
 	}
 
-	private class AuthVebViewClient extends WebViewClient {
+	private class AuthWebViewClient extends WebViewClient {
 
 		@Override
 		public void onPageFinished(WebView view, String url) {
@@ -119,23 +132,33 @@ public class TwitterLoginActivity extends Activity {
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		
+		private String url;
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			String url = twitterAuth.getUrl(TwitterLoginActivity.this.getApplicationContext());
-			//myWebView.getSettings().setJavaScriptEnabled(true);
-			myWebView.setWebViewClient(new AuthVebViewClient());
-			myWebView.loadUrl(url);
+			url = twitterAuth.getUrl(TwitterLoginActivity.this.getApplicationContext());
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
+			//myWebView.getSettings().setJavaScriptEnabled(true);
+			myWebView.setWebViewClient(new AuthWebViewClient());
+			myWebView.loadUrl(url);
 		}
 
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
 		}
+	}
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null;
 	}
 }

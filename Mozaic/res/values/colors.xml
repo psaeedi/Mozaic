@@ -1,0 +1,13 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="color_1">#00CCCC</color>
+    <color name="color_2">#ffa500</color>
+    <color name="color_3">#ffff00</color>
+    <color name="color_4">#008000</color>
+    <color name="color_5">#0000ff</color>
+    <color name="color_6">#ee82ee</color>
+    <color name="color_7">#d8e2e9</color>
+    <color name="color_8">#CC33CC</color>
+    
+</resources>

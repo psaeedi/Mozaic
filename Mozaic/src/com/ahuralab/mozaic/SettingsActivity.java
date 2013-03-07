@@ -1,7 +1,11 @@
 package com.ahuralab.mozaic;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -11,7 +15,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
@@ -55,32 +58,6 @@ public class SettingsActivity extends PreferenceActivity {
 		if (!isSimplePreferences(this.getApplicationContext())) {
 			return;
 		}
-
-		// In the simplified UI, fragments are not used at all and we instead
-		// use the older PreferenceActivity APIs.
-
-		// Add 'general' preferences.
-		addPreferencesFromResource(R.xml.pref_general);
-
-		// Add 'notifications' preferences, and a corresponding header.
-		PreferenceCategory fakeHeader = new PreferenceCategory(this.getApplicationContext());
-		fakeHeader.setTitle(R.string.pref_header_notifications);
-		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_notification);
-
-		// Add 'data and sync' preferences, and a corresponding header.
-		fakeHeader = new PreferenceCategory(this.getApplicationContext());
-		fakeHeader.setTitle(R.string.pref_header_data_sync);
-		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_data_sync);
-
-		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
-		// their values. When their values change, their summaries are updated
-		// to reflect the new value, per the Android Design guidelines.
-		bindPreferenceSummaryToValue(findPreference("example_text"));
-		bindPreferenceSummaryToValue(findPreference("example_list"));
-		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 	}
 
 	/** {@inheritDoc} */
@@ -94,8 +71,10 @@ public class SettingsActivity extends PreferenceActivity {
 	 * Helper method to determine if the device has an extra-large screen. For
 	 * example, 10" tablets are extra-large.
 	 */
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	private static boolean isXLargeTablet(Context context) {
-		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+		return (context.getResources().getConfiguration().screenLayout & 
+				Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
 	}
 
 	/**
@@ -252,5 +231,27 @@ public class SettingsActivity extends PreferenceActivity {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this).setTitle("Do you want to exit the setting page?")
+				.setMessage("Are you sure you want to exit?")
+				.setPositiveButton(android.R.string.yes, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						Intent intent = new Intent(getApplicationContext(),
+								TimelineActivity.class);
+						startActivity(intent);
+						SettingsActivity.super.onBackPressed();
+					}
+				})
+				.setNegativeButton(android.R.string.no, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						//SettingsActivity.super.onBackPressed();
+						//do nothing stay in the seting page
+					}
+				}).create().show();
 	}
 }

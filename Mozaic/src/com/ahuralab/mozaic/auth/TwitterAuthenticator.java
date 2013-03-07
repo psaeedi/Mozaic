@@ -3,7 +3,6 @@
  */
 package com.ahuralab.mozaic.auth;
 
-import oauth.signpost.OAuth;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -11,11 +10,9 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * @author pani
@@ -23,6 +20,7 @@ import android.widget.Toast;
  */
 public class TwitterAuthenticator {
 
+	private static final String TWITTER_CREDENTIAL = "twitter_credential";
 	// TODO change this callback in sth that the browser will not handle
 	public static final String CALLBACKURL = "http://ahuralab.com/mozaic";//;"twitterapp://connect";
 	public static final String consumerKey = "QPxhqFDEjZJ5sLppvPrA";
@@ -35,6 +33,7 @@ public class TwitterAuthenticator {
 	
 	private final CommonsHttpOAuthConsumer httpOauthConsumer = new CommonsHttpOAuthConsumer(
 			consumerKey, consumerSecret);
+	
 	
 	/*
 	public void authenticate(Context context) {
@@ -72,7 +71,7 @@ public class TwitterAuthenticator {
 
 				// Save user_key and user_secret in user preferences and return
 				SharedPreferences settings = context
-						.getSharedPreferences("twitter_credential", 0);
+						.getSharedPreferences(TWITTER_CREDENTIAL, 0);
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putString("user_key", userKey);
 				editor.putString("user_secret", userSecret);
@@ -89,7 +88,7 @@ public class TwitterAuthenticator {
 	
 	public Twitter createTwitter(Context context) {
 		SharedPreferences settings = context
-				.getSharedPreferences("twitter_credential", 0);
+				.getSharedPreferences(TWITTER_CREDENTIAL, 0);
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 				.setOAuthConsumerKey(consumerKey)
@@ -100,12 +99,22 @@ public class TwitterAuthenticator {
 		Twitter twitter = tf.getInstance();
 		return twitter;
 	}
+	
 	public boolean isAuthenticated(Context context) {
 		SharedPreferences settings = context
-				.getSharedPreferences("twitter_credential", 0);
+				.getSharedPreferences(TWITTER_CREDENTIAL, 0);
 		String key = settings.getString("user_key", null);
 		String secret = settings.getString("user_secret", null);
 		
 		return key != null && secret != null;
+	}
+	
+	public void twitterSignOut (Context context){
+		SharedPreferences settings = context
+				.getSharedPreferences(TWITTER_CREDENTIAL, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.remove(consumerKey);
+		editor.remove(consumerSecret);
+		editor.commit();
 	}
 }

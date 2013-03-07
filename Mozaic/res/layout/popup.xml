@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical" >
+     
+    <EditText
+        android:id="@+id/editTextStatus"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:inputType="textMultiLine">
+        <requestFocus />
+    </EditText>
+    
+    <ListView
+        android:id="@+id/listExample"
+        android:layout_width="fill_parent"
+        android:layout_height="154dp"
+        android:background="#CCCCCC"
+        android:choiceMode="singleChoice" />
+
+    <Button
+        android:id="@+id/dismiss"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fadingEdge="vertical"
+        android:text="Send" />
+
+</LinearLayout>

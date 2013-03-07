@@ -2,7 +2,22 @@
 <resources>
 
     <string name="app_name">Mozaic</string>
+    <string name="timeline_activity">Timeline</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="service_started">Example Service started</string>
+    <string name="service_label">Example Service Label</string>
+    <string name="load_timeline">Refresh</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="sign_out">Sign out</string>
+    <string name="reload">Reload</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="time">time</string>
+    <string name="twitterlogName">twitterlogname</string>
+    <string name="UserName">username</string>
+    <string name="editTextStatus">Status</string>
+    <string name="location">location</string>
+    <string name="home_pop">Popup</string>
 
 </resources>

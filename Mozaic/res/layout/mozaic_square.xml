@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layoutHo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+       <com.loopj.android.image.SmartImageView
+            android:id="@+id/imageView1"
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="twittimage"
+            android:gravity="center"
+            android:src="@drawable/avatar" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/message_username"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:text="@string/UserName"
+                android:textSize="@dimen/small_font" >
+
+            </TextView>
+
+            <Button
+                android:id="@+id/message_twitterusername"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/twitterlogName"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/small_font" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/message_time"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/small_font" />
+
+            <TextView
+                android:id="@+id/message_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/location"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="@dimen/small_font" />
+
+            </LinearLayout>
+        
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/message_content"
+        android:layout_margin="40dp"
+        android:layout_width="330dp"
+        android:background="@color/color_7"
+        android:layout_height="wrap_content" 
+        android:textSize="@dimen/medium_font" 
+        android:autoLink="web"
+        android:textIsSelectable="false"/>
+
+   
+
+</LinearLayout>
